@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sanbank
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sanbank
+  template:
+    metadata:
+      labels:
+        app: sanbank
+    spec:
+      containers:
+        - name: app
+          image: san-bank-app:1.0
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: IfNotPresent #Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sanbank-service
+spec:
+  selector:
+    app: sanbank
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: NodePort
+
+#https://stackoverflow.com/questions/38979231/imagepullbackoff-local-repository-with-minikube

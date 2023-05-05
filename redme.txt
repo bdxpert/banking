@@ -1,0 +1,33 @@
+Docker Command
+$ docker build -t san-bank-app:1.0
+$ docker ps
+$ docker run san-bank-app:1.0
+
+Set docker to point to minikube
+$ eval $(minikube docker-env)
+
+Push to minikube docker
+$ docker build -t san-bank-app:1.0 .
+
+K8S default is set to "Always" Change to "IfNotPresent"
+imagePullPolicy: IfNotPresent
+
+
+Commands to remember
+======================
+$ kubectl apply -f sanbank.yml
+$ kubectl get deployments
+$ kubectl get pods
+$ kubectl logs sanbank-85dd4fc655-gclzd
+$ kubectl get pods --watch
+$ kubectl get svc
+$ kubectl get nodes -o wide
+
+Minikube commands
+$ minikube start
+$ minikube stop
+$ minikube service sanbank-service --url  #Open service url
+$ minikube dashboard
+$ minikube tunnel
+$ minikube ip
+$ minikube service sanbank-service
