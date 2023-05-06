@@ -109,7 +109,7 @@ public class AccountController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(status? "Money deposited":"Somethings went wrong", HttpStatus.OK);
+        return new ResponseEntity<>(status? "Interest deposited":"Error to calculate interest", HttpStatus.OK);
     }
 
 }
