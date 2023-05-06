@@ -1,5 +1,6 @@
 package com.bank.app.entity;
 
+import com.bank.app.domain.AccountFactory;
 import com.bank.app.domain.CheckingAccountInterest;
 import com.bank.app.domain.IAccountInterest;
 import com.bank.app.domain.SavingsAccountInterest;
@@ -29,14 +30,8 @@ public class Account {
 
     public IAccountInterest getInterestStrategy()
     {
-        if(this.getType().equals("checking")){
-            interestStrategy = new CheckingAccountInterest();
-            this.setInterestStrategy(interestStrategy);
-        } else {
-            interestStrategy = new SavingsAccountInterest();
-            this.setInterestStrategy(interestStrategy);
-        }
-        return interestStrategy;
+        AccountFactory accountFactory = new AccountFactory(this.getType());
+        return accountFactory.getInstance();
     }
 
 }
