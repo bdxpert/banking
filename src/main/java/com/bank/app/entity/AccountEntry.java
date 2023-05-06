@@ -13,10 +13,7 @@ import java.util.Date;
 @Entity
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class AccountEntry {
-    @Id
-    @GeneratedValue
-    private long id;
+public class AccountEntry extends BaseEntity {
 
     private Date date;
     private double amount;

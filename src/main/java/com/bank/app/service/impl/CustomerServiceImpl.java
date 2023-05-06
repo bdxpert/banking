@@ -5,6 +5,8 @@ import com.bank.app.dto.adapter.CustomerAdapter;
 import com.bank.app.entity.Customer;
 import com.bank.app.repository.CustomerRepository;
 import com.bank.app.service.CustomerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ import java.util.Collection;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
+    Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
+
     @Autowired
     private CustomerRepository customerRepository;
     @Override
@@ -40,7 +44,8 @@ public class CustomerServiceImpl implements CustomerService {
             customer.setName(customerDTO.getName());
             customer = customerRepository.save(customer);
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            logger.error(e.getMessage());
+            throw new Exception("Unable to update customer");
         }
         return CustomerAdapter.getCustomerDTOFromCustomer(customer);
     }
@@ -48,11 +53,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomer(long customerId) {
         customerRepository.deleteById(customerId);
+        logger.info("customer deleted successfully");
     }
 
     @Override
     public CustomerDTO addCustomer(Customer customer) {
         customer = customerRepository.save(customer);
+        logger.info("customer added successfully");
         return CustomerAdapter.getCustomerDTOFromCustomer(customer);
     }
 }

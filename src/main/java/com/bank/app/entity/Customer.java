@@ -12,10 +12,7 @@ import java.util.List;
 @Entity
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Customer {
-	@Id
-	@GeneratedValue
-	private long id;
+public class Customer extends BaseEntity {
 	private String name;
 
 	public Customer(String name) {

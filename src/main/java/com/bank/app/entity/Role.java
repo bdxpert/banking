@@ -11,9 +11,6 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Role {
-    @Id
-    @GeneratedValue
-    private long id;
+public class Role extends BaseEntity {
     private String role;
 }

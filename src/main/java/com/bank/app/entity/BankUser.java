@@ -14,10 +14,7 @@ import java.util.List;
 @Entity
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class BankUser {
-    @Id
-    @GeneratedValue
-    private long id;
+public class BankUser extends BaseEntity {
 
     private String firstName;
 

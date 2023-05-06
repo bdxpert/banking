@@ -7,6 +7,8 @@ import com.bank.app.dto.adapter.RoleAdapter;
 import com.bank.app.dto.adapter.UserAdapter;
 import com.bank.app.repository.UserRepository;
 import com.bank.app.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+    Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -52,7 +56,8 @@ public class UserServiceImpl implements UserService {
             user.setEmail(userDTO.getLastName());
             user = userRepository.save(user);
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            logger.error(e.getMessage());
+            throw new Exception("Unable to update user");
         }
         return UserAdapter.getUserDTOFromUser(user);
     }

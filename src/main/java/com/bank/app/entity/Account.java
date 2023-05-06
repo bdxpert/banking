@@ -15,10 +15,8 @@ import java.util.List;
 @Entity
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Account {
-    @Id
-    @GeneratedValue
-    private long id;
+public class Account extends BaseEntity {
+
     private long accountNumber;
     private String type; // savings or checking
     @Transient
