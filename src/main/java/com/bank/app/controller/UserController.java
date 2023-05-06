@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
+import static com.bank.app.utils.AppConstant.SUCCESS;
+
 @RestController
 @RequestMapping("users")
 public class UserController extends BaseController {
@@ -28,7 +30,7 @@ public class UserController extends BaseController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return getResponse(SUCCESS, users, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
@@ -43,7 +45,7 @@ public class UserController extends BaseController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return getResponse(SUCCESS, user, HttpStatus.OK);
     }
 
     @DeleteMapping("/{userId}")
@@ -57,7 +59,7 @@ public class UserController extends BaseController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>("User deleted Successfully", HttpStatus.OK);
+        return getResponse(SUCCESS, "User deleted Successfully", HttpStatus.OK);
     }
 
     @PutMapping("/{userId}")
@@ -72,7 +74,7 @@ public class UserController extends BaseController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return getResponse(SUCCESS, result, HttpStatus.OK);
     }
 
     @PostMapping
@@ -85,6 +87,6 @@ public class UserController extends BaseController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return getResponse(SUCCESS, result, HttpStatus.OK);
     }
 }

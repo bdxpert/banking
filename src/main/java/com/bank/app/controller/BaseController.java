@@ -1,12 +1,13 @@
 package com.bank.app.controller;
 
 import com.google.common.collect.ImmutableMap;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static com.bank.app.utils.AppConstant.*;
 
 public abstract class BaseController {
-    public ResponseEntity<?> getResponse(String statusType, String message, Integer status) {
+    public ResponseEntity<?> getResponse(String statusType, String message, HttpStatus status) {
         if (statusType.equals(ERROR))
             return ResponseEntity.status(status).body(
                     ImmutableMap.of(statusType, ImmutableMap.of(STATUS, status, MESSAGE, message)));
@@ -14,5 +15,13 @@ public abstract class BaseController {
         return ResponseEntity.status(status).body(
                 ImmutableMap.of(STATUS, status, STATUS_TYPE, statusType, MESSAGE, message));
 
+    }
+    protected ResponseEntity<?> getResponse(String statusType, Object data, HttpStatus status) {
+        if (statusType.equals(ERROR))
+            return ResponseEntity.status(status).body(
+                    ImmutableMap.of(statusType, ImmutableMap.of(STATUS, status,  DATA, data)));
+
+        return ResponseEntity.status(status).body(
+                ImmutableMap.of(STATUS_TYPE, statusType, STATUS, status, DATA, data));
     }
 }
