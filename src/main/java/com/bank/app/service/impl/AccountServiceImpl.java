@@ -7,10 +7,14 @@ import com.bank.app.dto.adapter.AccountAdapter;
 import com.bank.app.entity.Account;
 import com.bank.app.entity.AccountEntry;
 import com.bank.app.entity.Customer;
+import com.bank.app.repository.AccountEntryRepository;
 import com.bank.app.repository.AccountRepository;
 import com.bank.app.repository.CustomerRepository;
 import com.bank.app.service.AccountService;
 import jakarta.transaction.Transactional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -20,6 +24,8 @@ public class AccountServiceImpl extends AccountSubject implements AccountService
 
     private CustomerRepository customerRepository;
     private AccountRepository accountRepository;
+    private AccountEntryRepository accountEntryRepository;
+    Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
 
     public AccountServiceImpl(CustomerRepository customerRepository, AccountRepository accountRepository) {
         this.customerRepository = customerRepository;
@@ -69,10 +75,12 @@ public class AccountServiceImpl extends AccountSubject implements AccountService
 
             accountRepository.save(account);
 
+            // notify observer
             notifyObs(accountDepositDTO.getAccountNumber());
             return Boolean.TRUE;
         } catch (Exception ex){
-            throw new Exception(ex.getMessage());
+            logger.error(ex.getMessage());
+            throw new Exception("Error occur while deposit money");
         }
     }
 
@@ -100,11 +108,13 @@ public class AccountServiceImpl extends AccountSubject implements AccountService
             entryList.add(entry);
             account.setAccountEntries(entryList);
             accountRepository.save(account);
+            // notify observer
             notifyObs(accountTransactionDTO.getAccountNumber());
 
             return Boolean.TRUE;
         } catch (Exception ex) {
-            throw new Exception(ex.getMessage());
+            logger.error(ex.getMessage());
+            throw new Exception("Error occur while withdraw money");
         }
     }
 
@@ -115,18 +125,47 @@ public class AccountServiceImpl extends AccountSubject implements AccountService
         Account account = accountRepository.findByAccountNumber(accountDTO.getAccountNumber());
         if (account !=null) {
             accountRepository.deleteById(account.getAccountNumber());
+            logger.info("Account: {} deleted", account.getAccountNumber());
             return Boolean.TRUE;
         }
 
         return Boolean.FALSE;
     }
+    @Transactional
     public AccountDTO updateAccount(AccountDTO accountDTO){
         Account account = accountRepository.findByAccountNumber(accountDTO.getAccountNumber());
         if (account !=null) {
             accountRepository.deleteById(account.getAccountNumber());
+            logger.info("Account: {} updated", account.getAccountNumber());
             return AccountAdapter.getAccountDTOFromAccount(account);
         }
         return null;
+    }
+    @Transactional
+    public Boolean computeInterest(AccountTransactionDTO accountTransactionDTO) throws Exception {
+        try {
+            Account account = accountRepository.findByAccountNumber(accountTransactionDTO.getAccountNumber());
+            if(account !=null) {
+
+                double balance = 0.0;
+                for(AccountEntry entry : account.getAccountEntries()) {
+                    balance += entry.getAmount();
+                }
+
+                AccountEntry entry = new AccountEntry();
+                entry.setAmount(account.getInterestStrategy().calculateInterest(balance));
+                entry.setDate(new Date());
+                entry.setDescription("interest");
+                entry.setFromPersonName("");
+                entry.setFromAccountNumber("");
+                accountEntryRepository.save(entry);
+                return Boolean.TRUE;
+            }
+            return false;
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            throw new Exception("Error occur while compute account interest");
+        }
     }
     /*
     public void transferFunds(long fromAccountNumber, long toAccountNumber, double amount, String description) {

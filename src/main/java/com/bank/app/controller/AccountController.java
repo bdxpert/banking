@@ -99,4 +99,17 @@ public class AccountController {
         }
         return new ResponseEntity<>(status? "Money deposited":"Somethings went wrong", HttpStatus.OK);
     }
+    @PostMapping("/add-interest")
+    public ResponseEntity<?> accountInterest(@RequestBody AccountTransactionDTO accountTransactionDTO) {
+        Boolean status;
+        try {
+            status = accountService.computeInterest(accountTransactionDTO);
+        } catch(DataAccessResourceFailureException e) {
+            throw new ApiRequestException(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+        } catch(Exception e) {
+            throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
+        }
+        return new ResponseEntity<>(status? "Money deposited":"Somethings went wrong", HttpStatus.OK);
+    }
+
 }
