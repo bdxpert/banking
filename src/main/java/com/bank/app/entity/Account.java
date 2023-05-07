@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -32,4 +33,21 @@ public class Account extends BaseEntity {
         return accountFactory.getInstance();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Account account = (Account) o;
+        return  accountNumber == account.accountNumber
+                && Objects.equals(type, account.type)
+                && Objects.equals(interestStrategy, account.interestStrategy)
+                && Objects.equals(accountEntries, account.accountEntries);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), accountNumber,
+                type, interestStrategy, accountEntries);
+    }
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -31,4 +32,18 @@ public class Customer extends BaseEntity {
 	@JoinColumn(name= "customer_id")
 	private List<Account> accounts;
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+		Customer customer = (Customer) o;
+		return  Objects.equals(name, customer.name) &&
+				Objects.equals(accounts, customer.accounts);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), name, accounts);
+	}
 }
