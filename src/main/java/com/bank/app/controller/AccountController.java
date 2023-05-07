@@ -10,9 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.bank.app.utils.AppConstant.SUCCESS;
+
 @RestController
 @RequestMapping("accounts")
-public class AccountController {
+public class AccountController extends BaseController {
     @Autowired
     private AccountService accountService;
 
@@ -28,7 +30,7 @@ public class AccountController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
+        return getResponse(SUCCESS, accountDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{accountId}")
@@ -44,7 +46,7 @@ public class AccountController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>("Account deleted Successfully", HttpStatus.OK);
+        return getResponse(SUCCESS, "Account deleted Successfully", HttpStatus.OK);
     }
 
 //    @PutMapping("/{accountId}")
@@ -60,20 +62,20 @@ public class AccountController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return getResponse(SUCCESS, result, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> addAccount(@RequestBody AccountDTO accountDTO) {
-        AccountDTO result;
+    public ResponseEntity<?> addAccount(@RequestBody AccountDTO accountDTOPayload) {
+        AccountDTO accountDTO;
         try {
-            result = accountService.createAccount(accountDTO);
+            accountDTO = accountService.createAccount(accountDTOPayload);
         } catch(DataAccessResourceFailureException e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return getResponse(SUCCESS, accountDTO, HttpStatus.OK);
     }
     @PostMapping("/deposit")
     public ResponseEntity<?> accountDeposit(@RequestBody AccountTransactionDTO accountTransactionDTO) {
@@ -85,7 +87,7 @@ public class AccountController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(status? "Money deposited":"Somethings went wrong", HttpStatus.OK);
+        return getResponse(SUCCESS, status? "Money deposited":"Somethings went wrong", HttpStatus.OK);
     }
     @PostMapping("/withdraw")
     public ResponseEntity<?> accountWithdraw(@RequestBody AccountTransactionDTO accountTransactionDTO) {
@@ -97,7 +99,7 @@ public class AccountController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(status? "Money deposited":"Somethings went wrong", HttpStatus.OK);
+        return getResponse(SUCCESS, status? "Money withdrawal":"Somethings went wrong", HttpStatus.OK);
     }
     @PostMapping("/add-interest")
     public ResponseEntity<?> accountInterest(@RequestBody AccountTransactionDTO accountTransactionDTO) {
@@ -109,7 +111,7 @@ public class AccountController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(status? "Interest deposited":"Error to calculate interest", HttpStatus.OK);
+        return getResponse(SUCCESS, status? "Interest deposited":"Error to calculate interest", HttpStatus.OK);
     }
 
 }

@@ -31,3 +31,6 @@ $ minikube dashboard
 $ minikube tunnel
 $ minikube ip
 $ minikube service sanbank-service
+
+##Security interceptor reference##
+https://bitbucket.org/authentication-app-blog/basic-authentication-for-spring-rest-app/src/master/src/main/java/com/cmbk/crud/employee/controllers/common/HTTPResponseHandler.java

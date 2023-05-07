@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
+import static com.bank.app.utils.AppConstant.SUCCESS;
+
 @RestController
 @RequestMapping("customers")
-public class CustomerController {
+public class CustomerController extends BaseController {
     @Autowired
     private CustomerService customerService;
     @Autowired
@@ -33,7 +35,7 @@ public class CustomerController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(customers, HttpStatus.OK);
+        return getResponse(SUCCESS, customers, HttpStatus.OK);
     }
 
     @GetMapping("/{customerId}")
@@ -48,7 +50,7 @@ public class CustomerController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(customerDTO, HttpStatus.OK);
+        return getResponse(SUCCESS, customerDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{customerId}")
@@ -62,14 +64,14 @@ public class CustomerController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>("Customer deleted Successfully", HttpStatus.OK);
+        return getResponse(SUCCESS, "Customer deleted Successfully", HttpStatus.OK);
     }
 
     @PutMapping("/{customerId}")
     public ResponseEntity<?> updateCustomer(@PathVariable long customerId, @RequestBody CustomerDTO customerDTO) {
-        CustomerDTO result;
+        CustomerDTO customerDTORes;
         try {
-            result = customerService.updateCustomer(customerId, customerDTO);
+            customerDTORes = customerService.updateCustomer(customerId, customerDTO);
         } catch (NullPointerException e) {
             throw new ApiRequestException("Customer with id " + customerId + " not found!", HttpStatus.NOT_FOUND);
         } catch(DataAccessResourceFailureException e) {
@@ -77,7 +79,7 @@ public class CustomerController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return getResponse(SUCCESS, customerDTORes, HttpStatus.OK);
     }
 
     @PostMapping
@@ -90,7 +92,7 @@ public class CustomerController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return getResponse(SUCCESS, result, HttpStatus.OK);
     }
     @GetMapping("/{customerId}/accounts")
     public ResponseEntity<?> getCustomerAccounts(@PathVariable long customerId) {
@@ -102,6 +104,6 @@ public class CustomerController {
         } catch(Exception e) {
             throw new ApiRequestException(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
-        return new ResponseEntity<>(accounts, HttpStatus.OK);
+        return getResponse(SUCCESS, accounts, HttpStatus.OK);
     }
 }
