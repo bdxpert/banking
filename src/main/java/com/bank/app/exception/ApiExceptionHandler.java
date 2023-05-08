@@ -30,7 +30,7 @@ public class ApiExceptionHandler extends BaseController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<?> noHandlerFoundException(NoHandlerFoundException ex) {
         log.debug(ex.getMessage(), ex.getCause());
-        return  getResponse(ERROR, "No resource found for your request. Please verify you request", HttpStatus.NOT_FOUND);
+        return  getResponse(ERROR, "No resource found for your request. Please verify request", HttpStatus.NOT_FOUND);
 
     }
 
@@ -39,7 +39,7 @@ public class ApiExceptionHandler extends BaseController {
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     public ResponseEntity<?> notSupportedException(HttpRequestMethodNotSupportedException ex) {
         log.debug(ex.getMessage(), ex.getCause());
-        return getResponse(ERROR,"Method Not Allowed. Please verify you request", HttpStatus.METHOD_NOT_ALLOWED);
+        return getResponse(ERROR,"Method Not Allowed. Please verify request", HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ExceptionHandler({Exception.class})
