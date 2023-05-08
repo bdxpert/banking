@@ -33,4 +33,6 @@ $ minikube ip
 $ minikube service sanbank-service
 
 ##Security interceptor reference##
+https://github.com/ali-bouali/spring-boot-3-jwt-security
+https://github.com/anicetkeric/spring-security-paseto
 https://bitbucket.org/authentication-app-blog/basic-authentication-for-spring-rest-app/src/master/src/main/java/com/cmbk/crud/employee/controllers/common/HTTPResponseHandler.java

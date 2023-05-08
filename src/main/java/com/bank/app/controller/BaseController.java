@@ -4,9 +4,16 @@ import com.google.common.collect.ImmutableMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import static com.bank.app.utils.AppConstant.*;
 
 public abstract class BaseController {
+    public static final Instant TIMESTAMP = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant();
+
+
     public ResponseEntity<?> getResponse(String statusType, String message, HttpStatus status) {
         if (statusType.equals(ERROR))
             return ResponseEntity.status(status).body(
