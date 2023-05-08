@@ -33,11 +33,9 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests()
 //                .authorizeRequests()
-                //.requestMatchers("/authentication**").permitAll()
-//                .antMatchers("/first/**").permitAll()
-                .requestMatchers("/**").permitAll()
+                .requestMatchers("/bankauth**").permitAll()
+//                .requestMatchers("/**").permitAll()
 
-//                .mvcMatchers("/authentication").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

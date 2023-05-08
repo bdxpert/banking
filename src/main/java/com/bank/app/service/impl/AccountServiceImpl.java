@@ -55,6 +55,7 @@ public class AccountServiceImpl extends AccountSubject implements AccountService
         Customer customer = new Customer(accountDTO.getAccountName());
         customer.setAccounts(Collections.singletonList(account));
         customerRepository.save(customer);
+        logger.info("Account created successfully");
         return AccountAdapter.getAccountDTOFromAccount(account);
     }
     //long accountNumber, double amount
@@ -74,7 +75,7 @@ public class AccountServiceImpl extends AccountSubject implements AccountService
             account.setAccountEntries(entryList);
 
             accountRepository.save(account);
-
+            logger.info("Account deposit successful");
             // notify observer
             notifyObs(accountDepositDTO.getAccountNumber());
             return Boolean.TRUE;
@@ -101,7 +102,7 @@ public class AccountServiceImpl extends AccountSubject implements AccountService
 
             entry.setDate(new Date());
             entry.setAmount(-accountTransactionDTO.getAmount());
-            entry.setDescription("widthdraw");
+            entry.setDescription("withdraw");
             entry.setFromAccountNumber("");
             entry.setFromPersonName("");
             List<AccountEntry> entryList = account.getAccountEntries();
@@ -110,7 +111,7 @@ public class AccountServiceImpl extends AccountSubject implements AccountService
             accountRepository.save(account);
             // notify observer
             notifyObs(accountTransactionDTO.getAccountNumber());
-
+            logger.info("Account withdraw successful..");
             return Boolean.TRUE;
         } catch (Exception ex) {
             logger.error(ex.getMessage());
@@ -159,6 +160,7 @@ public class AccountServiceImpl extends AccountSubject implements AccountService
                 entry.setFromPersonName("");
                 entry.setFromAccountNumber("");
                 accountEntryRepository.save(entry);
+                logger.info("Account interest calculation successful");
                 return Boolean.TRUE;
             }
             return false;

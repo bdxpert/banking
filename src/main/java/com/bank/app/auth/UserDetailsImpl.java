@@ -22,7 +22,7 @@ public class UserDetailsImpl implements UserDetails {
 
     public  UserDetailsImpl(BankUser user) {
         this.email = user.getEmail();
-//        this.roles = user.getRoles();
+        this.roles = user.getRoles();
         this.password = user.getPassword();
     }
 

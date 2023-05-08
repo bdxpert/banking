@@ -16,11 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 public class BankUser extends BaseEntity {
 
+    @Column(unique=true, nullable=false)
+    private String email;
+
     private String firstName;
 
     private String lastName;
 
-    private String email;
+
     private String password;
 
 
